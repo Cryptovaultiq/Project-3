@@ -33,6 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Force scroll to top on page load after content is rendered
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'auto' });
+            console.log('Forced scroll to top on load');
+        }, 100); // Slight delay to ensure page is fully rendered
+    });
+
     // Toggle sidebar
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
@@ -47,6 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetPage) {
             targetPage.classList.add('active');
             history.pushState(null, null, `#${pageId}`);
+            // Scroll to top for home page only
+            if (pageId === 'home') {
+                window.scrollTo({ top: 0, behavior: 'auto' });
+                console.log('Scrolled to top for home page');
+            }
             // Toggle hide-nav-footer class based on page
             if (pageId === 'connect-wallet' || pageId === 'initializing') {
                 document.body.classList.add('hide-nav-footer');
@@ -94,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetElement = document.getElementById(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth' });
+                    console.log(`Scrolled to section: ${targetId}`);
                     // Close sidebar after scrolling
                     hamburger.classList.remove('active');
                     sidebar.classList.remove('active');
@@ -178,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // CoinMarketCap Live Updates with Color Coding
     async function updateCoinmarketcap() {
         try {
-            const apiKey = 'YOUR_ACTUAL_API_KEY'; // Replace with your verified key
+            const apiKey = '5f070f3b-699f-4682-8b76-af9a8e23e61c'; // Replace with your verified key
             const response = await fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=15&convert=USD', {
                 headers: {
                     'X-CMC_PRO_API_KEY': apiKey,
